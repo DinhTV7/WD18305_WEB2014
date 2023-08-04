@@ -18,6 +18,9 @@ $users = $connect->query($sql_users)->fetchAll();
 
 <body>
     <h2>Danh sách người dùng</h2>
+    <a href="add_user.php">
+        <button>Thêm người dùng</button>
+    </a>
     <table border="1">
         <tr>
             <th>Id</th>
@@ -36,7 +39,7 @@ $users = $connect->query($sql_users)->fetchAll();
                 <td><?php echo $user["email"] ?></td>
                 <td><?php echo $user["phone"] ?></td>
                 <td>
-                    <img width="100px" src="img/<?php echo isset($user["image"]) ? $user["image"] : 'default.jpg' ?>" alt="">
+                    <img width="100px" src="img/<?php echo !isset($user["image"]) || empty($user["image"]) ? 'default.jpg' : $user["image"] ?>" alt="">
                 </td>
                 <td><?php echo $user["name_role"] ?></td>
                 <td><?php echo $user["status"] == 0 ? "Hoạt động" : "Ngừng hoạt động" ?></td>
@@ -44,10 +47,21 @@ $users = $connect->query($sql_users)->fetchAll();
                     <a href="edit_user.php?id=<?php echo $user["id"] ?>">
                         <button>Sửa</button>
                     </a>
+                    <a href="javascript:confirmDelete(<?php echo $user["id"] ?>)">
+                        <button>Xóa</button>
+                    </a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table>
 </body>
+<script>
+    function confirmDelete(id_user) {
+        // console.log(id_user);
+        if (confirm("Bạn có muốn xóa user không?")) {
+            document.location = `delete_user.php?id=${id_user}`;
+        }
+    }
+</script>
 
 </html>
