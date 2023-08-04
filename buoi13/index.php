@@ -24,8 +24,10 @@ $users = $connect->query($sql_users)->fetchAll();
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Image</th>
             <th>Role</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
         <?php foreach ($users as $user) : ?>
             <tr>
@@ -33,8 +35,16 @@ $users = $connect->query($sql_users)->fetchAll();
                 <td><?php echo $user["name"] ?></td>
                 <td><?php echo $user["email"] ?></td>
                 <td><?php echo $user["phone"] ?></td>
+                <td>
+                    <img width="100px" src="img/<?php echo isset($user["image"]) ? $user["image"] : 'default.jpg' ?>" alt="">
+                </td>
                 <td><?php echo $user["name_role"] ?></td>
                 <td><?php echo $user["status"] == 0 ? "Hoạt động" : "Ngừng hoạt động" ?></td>
+                <td>
+                    <a href="edit_user.php?id=<?php echo $user["id"] ?>">
+                        <button>Sửa</button>
+                    </a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
