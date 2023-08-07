@@ -41,10 +41,6 @@
         $role_id = $_POST["role"];
         $status = $_POST["status"];
 
-        // Lấy thông tin ảnh đẩy lên từ form
-        $hinh = $_FILES["image"];
-        // var_dump($hinh);
-
         // empty là hàm kiểm dữ liệu có trống hay không 
         // (nếu trống thì sẽ trả là true)
         if (empty($name)) {
@@ -68,19 +64,17 @@
             $error["phone"] = "Số điện thoại không hợp lệ";
         }
 
-        // Kiểm tra có tệp ảnh tải lên không
-        if (isset($hinh)) {
-            // Thư mục chứa ảnh sau khi upload
-            $target_dir = "img/";
-            // Lấy ra tên của ảnh đẩy từ form
-            $image = $hinh["name"];
-            // Tạo 1 đường dẫ đầy đủ của ảnh trên máy chủ
-            $target_file = $target_dir . $image;
-            // Di chuyển ảnh tới thư mục đã tạo
-            move_uploaded_file($hinh['tmp_name'], $target_file);
+        // Xử lý hình ảnh
+        $image = $_FILES["image"]["name"];
+        if (!empty($image)) {
+            // Thư mục bạn sẽ lưu file upload
+            $target_dir    = "img/";
+            // Tạo đường dẫn đầy đủ của tệp ảnh trên máy chủ
+            $target_file   = $target_dir . $image;
+            // Di chuyển tệp ảnh từ thư mục tạm thời (tmp_name) đến thư mục đích (target_file)
+            move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
         } else {
-            $image = $user["image"]; 
-            // Nếu không đẩy anh lên thì giữ nguyên ảnh cũ
+            $image = $user['image']; // Nếu không có hình mới, giữ nguyên hình cũ
         }
 
         // Nếu không có lỗi thì insert dữ liệu vào database
